@@ -1,0 +1,26 @@
+database:
+  host: 192.168.99.100
+  port: 32768
+  name: fitr
+
+server:
+  applicationConnectors:
+    - type: https
+      port: 8443
+      keyStorePath: example.keystore
+      keyStorePassword: example
+      validateCerts: false
+      validatePeers: false
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+    - type: file
+      threshold: INFO
+      logFormat: "%-6level [%d{HH:mm:ss.SSS}] [%t] %logger{5} - %X{code} %msg %n"
+      currentLogFilename: application.log
+      archivedLogFilenamePattern: application-%d{yyyy-MM-dd}-%i.log.gz
+      archivedFileCount: 7
+      timeZone: UTC
+      maxFileSize: 10MB
