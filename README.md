@@ -1,18 +1,25 @@
 Description
 -----------
 
-A simple microservice for user profile data using Dropwizard and MongoDB.
+A simple microservice for user profile data and profile images using Dropwizard and MongoDB.
 
-It utilises streams both inbound and outbound to prevent out of memory errors.
+It utilises end-to-end streaming for images (client to database, and vice-versa) to prevent out of memory errors.
 
-It auths against fitr-service-user (a centralised auth microservice), expecting a JWT token to be provided in the header of each API request.
+Auth
+----
+
+The API expects a JWT token to be provided in the header of each API request. This JWT token should be obtained
+from login via the fitr-service-user service (a centralised auth microservice).
+
+All JWT tokens are validated against this auth service.
 
 Technologies
 ------------
+
 - Dropwizard Core - JAXRS, Jersey
 - Dropwizard Auth
 - Mongojack
-- MongoDB
+- MongoDB & GridFS
 
 Setup
 -----
