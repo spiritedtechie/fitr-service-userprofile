@@ -1,0 +1,10 @@
+service:
+  build: .
+  ports:
+    - "9443:8443"
+  links:
+    - db
+  external_links:
+    - fitrserviceauth_service_1:authservice
+db:
+  image: mongo

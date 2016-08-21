@@ -3,11 +3,13 @@ database:
   port: 32768
   name: fitr
 
+authBaseUrl: https://192.168.99.100:8443
+
 server:
   applicationConnectors:
     - type: https
       port: 8443
-      keyStorePath: example.keystore
+      keyStorePath: ssl/keystore/fitr-keystore.jks
       keyStorePassword: example
       validateCerts: false
       validatePeers: false

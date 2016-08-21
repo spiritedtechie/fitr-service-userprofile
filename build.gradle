@@ -27,11 +27,21 @@ dependencies {
     compile group: 'io.dropwizard', name: 'dropwizard-auth', version: '0.9.2'
     compile group: 'io.dropwizard', name: 'dropwizard-forms', version: '0.9.2'
 
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
 
     compile group: 'org.mongojack', name: 'mongojack', version: '2.6.0'
 }
 
-applicationDefaultJvmArgs = ["-Xms128m", "-Xmx256m"]
+applicationDefaultJvmArgs = ["-Xms128m",
+                             "-Xmx256m",
+                             "-Djavax.net.ssl.trustStore=ssl/truststore/fitr-truststore.jks",
+                             "-Djavax.net.ssl.trustStorePassword=example"]
+
 mainClassName = 'UserProfileApplication'
 
 task oneJar(type: OneJar) {
@@ -39,7 +49,7 @@ task oneJar(type: OneJar) {
 }
 
 run {
-    args 'server', 'local.yml'
+    args 'server', 'config-local.yml'
 }
 
 artifacts {

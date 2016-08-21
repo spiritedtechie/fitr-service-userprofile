@@ -28,7 +28,7 @@ public class UserProfileDto {
         this.goals = goals;
     }
 
-    public UserProfile userProfileFrom() {
+    public UserProfile convertToUserProfile() {
 
         List<Goal> goals = new ArrayList<>();
         for (GoalDto goalDto : this.goals) {
