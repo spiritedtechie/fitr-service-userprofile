@@ -12,13 +12,14 @@ The API expects a JWT token to be provided in the header (named 'authToken') of 
 
 This JWT token should be obtained from login via the fitr-service-auth service (a centralised auth microservice).
 
-All JWT tokens provided are validated using the auth microservice.
+All JWT tokens provided are validated using the auth microservice. The JWT token holds the role of the user, and each resource is protected with role-based authorization.
 
 Technologies
 ------------
 
 - Dropwizard Core - JAXRS, Jersey
 - Dropwizard Auth
+- Java Security
 - Mongojack
 - MongoDB & GridFS
 
@@ -64,7 +65,7 @@ There are two options here:
 Docker Installation
 -------------------
 
-Docker Compose is used to create and the following Docker containers:
+Docker Compose is used to create and/or link the following Docker containers:
 
 1. MongoDB instance
 3. The User Profile microservice
@@ -101,20 +102,20 @@ Testing
 
 PUT (Update) Profile
 
-curl -k -H "Content-Type: application/json" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT -d '{"favouriteActivity":"walking","goals":[{"type":"distance","metric":"2000"}]}' https://<host>:<port>/user/profile
+    curl -k -H "Content-Type: application/json" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT -d '{"favouriteActivity":"walking","goals":[{"type":"distance","metric":"2000"}]}' https://<host>:<port>/user/profile
 
 GET Profile
 
-curl -k -H "Content-Type: application/json" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X GET https://<host>:<port>/user/profile
+    curl -k -H "Content-Type: application/json" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X GET https://<host>:<port>/user/profile
 
 PUT (Update) Profile Image
 
-curl -k -F "profileimage=@/tmp/testImage.png" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT https://<host>:<port>/user/profile/image
+    curl -k -F "profileimage=@/tmp/testImage.png" -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT https://<host>:<port>/user/profile/image
 
 GET Profile Image
 
-curl -k -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X GET https://<host>:<port>/user/profile/image >> test.png
+    curl -k -H "authToken: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X GET https://<host>:<port>/user/profile/image >> test.png
 
 PUT Profile (with invalid JWT token)
 
-curl -k -H "Content-Type: application/json" -H "authToken: yJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT -d '{"favouriteActivity":"walking","goals":[{"type":"distance","metric":"2000"}]}' https://<host>:<port>/user/profile
+    curl -k -H "Content-Type: application/json" -H "authToken: yJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2IxQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUwiLCJpZCI6IjU3YjljMmUyYzllNzdjMDAwMWU2NTIzOCJ9.BVjRZ7FFV40cmPeJl18_mbfvPbGfjMoBOoPKerE83GdvIle-h5RcUkGtOeWSJaXgpt5HjO5EmIu3heqwgDiAJQ" -X PUT -d '{"favouriteActivity":"walking","goals":[{"type":"distance","metric":"2000"}]}' https://<host>:<port>/user/profile
